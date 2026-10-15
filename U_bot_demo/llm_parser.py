@@ -21,6 +21,12 @@ import os
 import re
 import requests
 
+try:  # อ่านค่า LLM_* จากไฟล์ .env ในโฟลเดอร์นี้ (ถ้ามี) — ไม่ต้องตั้ง $env ทุกครั้ง
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+except ImportError:
+    pass
+
 CATEGORIES = ["อาหาร", "เดินทาง", "ที่พัก", "ของใช้", "บิล/สาธารณูปโภค", "สุขภาพ", "บันเทิง", "อื่นๆ"]
 
 SYSTEM_PROMPT = f"""คุณคือตัวแปลงข้อความภาษาไทยเป็นรายการรายจ่าย/รายรับเงินสด
@@ -59,18 +65,31 @@ def _extract_json(raw: str) -> dict:
     return json.loads(m.group(0))
 
 
+# เกณฑ์ตีธง "ต้องตรวจ" (ปรับได้ใน .env)
+REVIEW_ABOVE = float(os.getenv("REVIEW_ABOVE", "10000"))  # ยอดสูงผิดปกติ
+REVIEW_BELOW = float(os.getenv("REVIEW_BELOW", "5"))      # ยอดต่ำผิดปกติ (อาจฟังผิด)
+
+
 def validate(data: dict) -> list[dict]:
-    """โค้ดตรวจ: คัดเฉพาะรายการที่ถูกต้อง; amount ว่าง/ติดลบ/เกินสมเหตุสมผลจะถูกตีธงให้ผู้ใช้แก้ในหน้าตรวจ"""
+    """โค้ดตรวจ: คัดเฉพาะรายการที่ถูกต้อง; amount ว่าง/ติดลบ/สูงหรือต่ำผิดปกติจะถูกตีธงให้ผู้ใช้แก้ในหน้าตรวจ"""
     out = []
     for it in data.get("items", []):
         amt = it.get("amount")
         ok = isinstance(amt, (int, float)) and 0 < amt <= 1_000_000
+        reason = None
+        if not ok:
+            reason = "ไม่พบจำนวนเงินที่ถูกต้อง"
+        elif amt > REVIEW_ABOVE:
+            reason = f"ยอดสูงกว่า {REVIEW_ABOVE:,.0f} บาท"
+        elif amt < REVIEW_BELOW:
+            reason = f"ยอดต่ำกว่า {REVIEW_BELOW:,.0f} บาท อาจฟังผิด"
         out.append({
             "type": it.get("type") if it.get("type") in ("expense", "income") else "expense",
             "amount": float(amt) if ok else None,
             "merchant": str(it.get("merchant") or "").strip(),
             "category": it.get("category") if it.get("category") in CATEGORIES else "อื่นๆ",
-            "needs_review": not ok,
+            "needs_review": reason is not None,
+            "review_reason": reason,
         })
     return out
 
@@ -88,6 +107,7 @@ def _fallback(text: str) -> list[dict]:
         items.append({
             "type": "income" if any(w in part for w in income_words) else "expense",
             "amount": amt, "merchant": label, "category": "อื่นๆ", "needs_review": True,
+            "review_reason": "แปลงด้วยโหมดสำรอง (ไม่ได้ใช้ AI)",
         })
     return items
 
