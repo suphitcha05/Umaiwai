@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>บ้านรอด AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+/* เลย์เอาต์: คอลัมน์เดียวแบบแอปมือถือ ตัวเลขงบวันนี้คือพระเอก แท็บล่างสี่ปุ่ม */
+:root {
+  --bg: #EDF1EE; --surface: #FFFFFF; --surface-2: #E2E9E4; --line: #CBD6CF;
+  --fg: #15201B; --muted: #56675E; --accent: #0A735C; --accent-fg: #FFFFFF; --accent-soft: #D5EBE3;
+  --warn: #9A5F0C; --warn-soft: #F6E7CC; --bad: #AE3726; --bad-soft: #F7DCD6;
+  --f-display: "Anuphan", "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0D1311; --surface: #151D1A; --surface-2: #1D2824; --line: #2B3833;
+  --fg: #E3EBE6; --muted: #92A59B; --accent: #42C4A1; --accent-fg: #06150F; --accent-soft: #163A30;
+  --warn: #E7AC52; --warn-soft: #3A2C14; --bad: #F2806B; --bad-soft: #3D1D17; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0D1311; --surface: #151D1A; --surface-2: #1D2824; --line: #2B3833;
+  --fg: #E3EBE6; --muted: #92A59B; --accent: #42C4A1; --accent-fg: #06150F; --accent-soft: #163A30;
+  --warn: #E7AC52; --warn-soft: #3A2C14; --bad: #F2806B; --bad-soft: #3D1D17; color-scheme: dark; }
+
+#view { display: grid; gap: 14px; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.55; }
+.app { max-width: 480px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 12px calc(88px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); } .small { font-size: 13.5px; } .bad { color: var(--bad); } .strong { font-weight: 600; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
+h2 { font-size: 17px; font-weight: 600; } h3 { font-size: 15px; font-weight: 600; }
+p { margin: 0; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.brand { font-family: var(--f-display); font-weight: 700; font-size: 19px; letter-spacing: .01em; }
+.brand span { color: var(--accent); }
+.top-r { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13.5px; }
+
+.chip { font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 99px; background: var(--surface-2); color: var(--muted); letter-spacing: .02em; white-space: nowrap; }
+.chip-warn { background: var(--warn-soft); color: var(--warn); }
+
+.hero { background: var(--surface); border-radius: 20px; padding: 18px 18px 16px; display: grid; gap: 8px; border: 1px solid var(--line); }
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.eyebrow { font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+.big { font-family: var(--f-display); font-weight: 700; font-size: clamp(52px, 17vw, 76px); line-height: 1.05; color: var(--accent); letter-spacing: -.01em; }
+.hero.is-over .big { color: var(--bad); }
+.hero-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; }
+.bar { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
+.hero.is-over .bar span, .bar.over span { background: var(--bad); }
+.bar.thin { height: 6px; }
+
+.why { background: var(--accent-soft); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 6px; }
+.why h2 { font-size: 14px; color: var(--accent); letter-spacing: .02em; }
+.block { display: grid; gap: 10px; padding: 4px 2px; }
+.block + .block { border-top: 1px solid var(--line); padding-top: 16px; }
+.h-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+.cats { display: grid; gap: 10px; }
+.cat-line { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 4px; }
+.tx, .shops { display: grid; }
+.tx li, .shops li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.tx li > div:first-child, .shops li > div:first-child { min-width: 0; display: grid; }
+.tx strong, .shops strong { font-weight: 500; overflow-wrap: anywhere; }
+.sub { font-size: 13px; color: var(--muted); }
+.src-sample { color: var(--warn); font-weight: 600; }
+.tx-r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.empty { color: var(--muted); padding: 8px 0; }
+.fixed { display: grid; gap: 6px; }
+.fixed li { display: flex; justify-content: space-between; gap: 8px; }
+.fixed label { display: flex; gap: 8px; align-items: center; }
+.debt { font-size: 14px; color: var(--warn); }
+.ledger dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0; font-size: 14.5px; }
+.ledger dt { color: var(--muted); } .ledger dt.strong { color: var(--fg); } .ledger dd { margin: 0; text-align: right; }
+.demo { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 14px; }
+.block.demo + .block, .block + .block.demo { border-top: 1px dashed var(--line); }
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; }
+.grow { flex: 1 1 160px; }
+.btn { font: 600 15px var(--f-body); border: 0; border-radius: 12px; padding: 11px 16px; background: var(--accent); color: var(--accent-fg); cursor: pointer; min-height: 44px; }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn-ghost { background: var(--surface-2); color: var(--fg); }
+.btn-small { min-height: 36px; padding: 6px 12px; font-size: 14px; }
+.btn-link { background: none; color: var(--accent); padding: 4px 0; min-height: 0; text-decoration: underline; text-underline-offset: 3px; justify-self: start; }
+.icon-btn { font: 500 13px var(--f-body); background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 8px; padding: 4px 8px; cursor: pointer; }
+.icon-btn:disabled { opacity: .35; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+input, select { font: 16px var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; width: 100%; box-sizing: border-box; }
+input[type="checkbox"], input[type="radio"] { width: 20px; height: 20px; accent-color: var(--accent); padding: 0; }
+fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+legend { font-family: var(--f-display); font-weight: 600; font-size: 15px; padding: 0; margin-bottom: 8px; color: var(--fg); }
+.settings { gap: 22px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (max-width: 400px) { .grid3 { grid-template-columns: 1fr 1fr; } }
+.seg { display: grid; gap: 6px; }
+.seg label { display: flex; align-items: center; gap: 8px; color: var(--fg); font-size: 15px; }
+.fx-row { display: grid; grid-template-columns: 1fr 110px auto; gap: 8px; align-items: center; margin-bottom: 8px; }
+.cat-head, .cat-row { display: grid; grid-template-columns: 1fr 88px 70px 64px; gap: 8px; align-items: center; }
+.cat-row > span:first-child { font-size: 15px; }
+.ord { display: flex; gap: 4px; }
+
+.drop { display: grid; place-items: center; gap: 4px; padding: 28px 16px; border: 2px dashed var(--accent); border-radius: 18px; background: var(--accent-soft); cursor: pointer; text-align: center; }
+.drop-title { font-family: var(--f-display); font-weight: 700; font-size: 20px; color: var(--accent); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.drop:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+.samples { display: grid; gap: 8px; }
+.samples .btn { text-align: left; font-weight: 500; }
+.status { color: var(--accent); font-weight: 600; min-height: 1.2em; }
+.note { background: var(--warn-soft); color: var(--warn); padding: 10px 12px; border-radius: 10px; font-size: 14px; }
+.remember { background: var(--accent-soft); color: var(--accent); padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 500; }
+.first-note { background: var(--warn-soft); padding: 10px 12px; border-radius: 10px; color: var(--warn); font-weight: 600; }
+.review { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+
+.picks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.picks > span { flex-basis: 100%; }
+.pick-chip { font: 500 14px var(--f-body); background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); border-radius: 99px; padding: 6px 12px; cursor: pointer; max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.raw summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+.raw pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; background: var(--surface-2); padding: 10px; border-radius: 8px; max-height: 240px; overflow: auto; }
+.memo-line { font-size: 14px; color: var(--accent); font-weight: 500; }
+.reason { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; display: grid; gap: 4px; font-size: 14px; }
+.reason .muted { margin-right: 4px; }
+.reason.conf-low { background: var(--warn-soft); }
+.in { color: var(--accent); font-weight: 600; }
+.rules summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.rules ol { margin: 8px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
+.rules .sub { display: block; overflow-wrap: anywhere; }
+.tests { display: grid; gap: 6px; font-size: 14px; }
+.tests span { font-weight: 600; display: inline-block; min-width: 56px; }
+.tests .pass span { color: var(--accent); } .tests .fail span { color: var(--bad); }
+
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); z-index: 5; }
+.tabs-in { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.tabs button { font: 600 14px var(--f-body); background: none; border: 0; color: var(--muted); padding: 14px 4px; cursor: pointer; border-top: 3px solid transparent; }
+.tabs button[aria-current="page"] { color: var(--accent); border-top-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">บ้านรอด <span>AI</span></div>
+    <div class="top-r"><span id="date-line" class="num"></span><span id="sample-chip" class="chip chip-warn">ข้อมูลตัวอย่าง</span></div>
+  </header>
+  <main id="view"></main>
+</div>
+<nav class="tabs" aria-label="เมนูหลัก"><div class="tabs-in">
+  <button data-tab="today">วันนี้</button><button data-tab="add">เพิ่มสลิป</button><button data-tab="shops">ร้านที่จำ</button><button data-tab="settings">ตั้งค่า</button>
+</div></nav>
+<script>/* บ้านรอด AI — ชุดกฎจัดหมวดจากสลิป
+   อ่าน 3 ช่อง: ผู้ส่ง, ผู้รับ/ร้าน, บันทึกช่วยจำ
+   ลำดับการตัดสิน (ข้อแรกที่เข้าได้ชนะ):
+     1. ทิศทางเงินจากชื่อผู้ส่ง/ผู้รับเทียบกับชื่อเจ้าของ → โอนระหว่างบัญชีตัวเอง / รายรับ
+     2. บันทึกช่วยจำที่ระบุหมวดตรงๆ (เช่น "ค่ากิน", "#เดินทาง")
+     3. บันทึกช่วยจำที่เข้ากฎคำหลัก
+     4. ร้านที่ผู้ใช้เคยสอนแอปไว้ (ความจำร้าน / ชื่อที่เคยแก้ / เลขบัญชี)
+     5. ชื่อร้านที่เข้ากฎคำหลัก (ข้ามถ้าผู้รับเป็นบุคคล เพราะชื่อคนมักชนคำหลัก)
+     6. ผู้รับเป็นบุคคลและไม่มีบันทึกช่วยจำ → อื่นๆ ให้ผู้ใช้เลือก
+     7. ไม่เข้ากฎใดเลย → อื่นๆ ให้ผู้ใช้เลือก
+   เพิ่มกฎได้ที่ RULES: กฎบนชนะกฎล่าง คำภาษาอังกฤษจับเป็นคำทั้งคำ คำไทยจับเป็นส่วนของข้อความ */
+(function (root) {
+  const R = (id, cat, label, terms, extra) => ({ id, cat, label, terms, extra: extra || null });
+
+  // หมวดที่ผู้ใช้พิมพ์ชื่อตรงๆ ในบันทึกช่วยจำ
+  const EXPLICIT = [
+    ['food', ['ค่ากิน', 'ค่าอาหาร', '#กิน', '#อาหาร']],
+    ['coffee', ['กาแฟ', '#กาแฟ', 'ค่ากาแฟ']],
+    ['travel', ['เดินทาง', 'ค่าเดินทาง', '#เดินทาง']],
+    ['shop', ['ช้อปปิ้ง', '#ช้อป', '#ช้อปปิ้ง']],
+    ['fixed', ['ค่าคงที่', '#คงที่', '#บิล']],
+    ['transfer', ['#ออม', '#โอนตัวเอง', 'ไม่นับ']],
+    ['other', ['อื่นๆ', '#อื่น']],
+  ];
+
+  const RULES = [
+    // --- ไม่นับเป็นรายจ่าย ---
+    R('saving', 'transfer', 'ออม/ลงทุน', ['ออมเงิน', 'เงินออม', 'เก็บเงิน', 'ฝากเงิน', 'ฝากประจำ', 'บัญชีตัวเอง', 'บัญชีออม', 'saving', 'savings', 'ลงทุน', 'กองทุน', 'ซื้อหุ้น', 'ออมทอง', 'ซื้อทอง', 'dime', 'finnomena', 'bitkub', 'binance', 'คริปโต', 'crypto']),
+    R('lend', 'transfer', 'ยืม/คืนเงิน', ['ให้ยืม', 'ยืมเงิน', 'คืนเงิน', 'ใช้หนี้', 'คืนหนี้', 'ผ่อนเพื่อน']),
+    R('wallet', 'transfer', 'เติมกระเป๋าเงิน', ['truemoney', 'true money', 'ทรูมันนี่', 'ทรูมันนี', 'rabbit line pay', 'แรบบิทไลน์เพย์', 'เป๋าตัง', 'paotang', 'เติมวอลเล็ท', 'เติม wallet']),
+    R('family', 'other', 'ส่งเงินให้ครอบครัว', ['ให้แม่', 'ให้พ่อ', 'ส่งเงินให้', 'เงินให้ที่บ้าน', 'ค่าใช้จ่ายบ้าน', 'ค่าขนมลูก', 'ค่าขนมน้อง']),
+
+    // --- ค่ากิน / กาแฟ ---
+    R('delivery', 'food', 'สั่งอาหารเดลิเวอรี', ['grabfood', 'grab food', 'แกร็บฟู้ด', 'line man', 'lineman', 'ไลน์แมน', 'foodpanda', 'ฟู้ดแพนด้า', 'robinhood', 'โรบินฮู้ด', 'shopeefood', 'shopee food', 'ช้อปปี้ฟู้ด']),
+    R('cafe', 'coffee', 'ร้านกาแฟ/ชา', ['กาแฟ', 'coffee', 'cafe', 'café', 'คาเฟ่', 'amazon', 'อเมซอน', 'starbucks', 'สตาร์บัคส์', 'inthanin', 'อินทนิล', 'black canyon', 'แบล็คแคนยอน', 'doi chaang', 'ดอยช้าง', 'wawee', 'วาวี', 'punthai', 'พันธุ์ไทย', 'chao doi', 'ชาวดอย', 'arabica', 'kudsan', 'ชานม', 'ชาไทย', 'ชาเขียว', 'ชาไข่มุก', 'ไข่มุก', 'bubble tea', 'boba', 'ชาตรามือ', 'cha tra mue', 'tiger sugar', 'koi', 'mixue', 'มิกซ์เซ่อ', 'tea']),
+    R('restaurant', 'food', 'ร้านอาหาร/ของกิน', ['ค่าข้าว', 'ข้าว', 'กิน', 'อาหาร', 'มื้อ', 'กับข้าว', 'ก๋วยเตี๋ยว', 'ตามสั่ง', 'ส้มตำ', 'หมูกระทะ', 'ชาบู', 'สุกี้', 'โจ๊ก', 'บะหมี่', 'ราเมง', 'ซูชิ', 'หมูปิ้ง', 'ไก่ทอด', 'ไก่ย่าง', 'ข้าวมันไก่', 'ข้าวขาหมู', 'ผัดไทย', 'ขนม', 'ผลไม้', 'น้ำดื่ม', 'น้ำแข็ง', 'ของสด', 'ตลาดสด', 'ครัว', 'food', 'meal', 'lunch', 'dinner', 'breakfast', 'restaurant', 'kitchen', 'mk', 'เอ็มเค', 'fuji', 'ฟูจิ', 'yayoi', 'ยาโยอิ', 'sizzler', 'ซิซซ์เลอร์', 'kfc', 'เคเอฟซี', "mcdonald's", 'mcdonalds', 'แมคโดนัลด์', 'burger king', 'เบอร์เกอร์คิง', 'pizza', 'พิซซ่า', "swensen's", 'สเวนเซ่นส์', 'dairy queen', 'bonchon', 'บอนชอน', 'shabushi', 'ชาบูชิ', 'bar b q plaza', 'บาร์บีคิวพลาซ่า', 'สุกี้ตี๋น้อย', 'after you', 'อาฟเตอร์ยู', 's&p', "chester's", 'เชสเตอร์', 'texas chicken', 'subway', 'sukishi', 'โอ้กะจู๋', 'zen', 'hachiban', 'ฮะจิบัง', 'yoshinoya', 'โยชิโนยะ']),
+    R('grocery', 'food', 'สะดวกซื้อ/ซูเปอร์ฯ (ส่วนใหญ่ของกิน)', ['7-eleven', '7-11', 'seven eleven', 'เซเว่น', 'familymart', 'family mart', 'แฟมิลี่มาร์ท', "lotus's", 'lotus', 'โลตัส', 'big c', 'บิ๊กซี', 'tops', 'ท็อปส์', 'makro', 'แม็คโคร', 'villa market', 'gourmet market', 'กูร์เมต์', 'cj express', 'ซีเจ', 'foodland', 'ฟู้ดแลนด์', 'maxvalu', 'แม็กซ์แวลู', 'lawson', 'ลอว์สัน', 'ร้านขายของชำ', 'ร้านชำ', 'มินิมาร์ท', 'minimart'], { conf: 'mid' }),
+
+    // --- เดินทาง ---
+    R('fuel', 'travel', 'น้ำมัน/ทางด่วน/จอดรถ', ['น้ำมัน', 'เติมน้ำมัน', 'ptt', 'ปตท', 'pt station', 'พีที', 'bangchak', 'บางจาก', 'shell', 'เชลล์', 'esso', 'เอสโซ่', 'caltex', 'คาลเท็กซ์', 'susco', 'ซัสโก้', 'ngv', 'lpg', 'ทางด่วน', 'การทางพิเศษ', 'easy pass', 'm-flow', 'จอดรถ', 'parking']),
+    R('transit', 'travel', 'ขนส่งสาธารณะ', ['เดินทาง', 'bts', 'บีทีเอส', 'mrt', 'เอ็มอาร์ที', 'rabbit', 'แรบบิท', 'airport rail link', 'แอร์พอร์ตเรลลิงก์', 'การรถไฟ', 'รถไฟ', 'srt', 'ขสมก', 'รถเมล์', 'รถตู้', 'เรือด่วน', 'ค่าเรือ', 'สองแถว']),
+    R('ride', 'travel', 'เรียกรถ/แท็กซี่/วิน', ['grab', 'แกร็บ', 'bolt', 'โบลท์', 'indrive', 'แท็กซี่', 'taxi', 'วินมอเตอร์ไซค์', 'มอเตอร์ไซค์รับจ้าง', 'ค่าวิน', 'ค่ารถ', 'ค่าแท็กซี่']),
+    R('trip', 'travel', 'ตั๋ว/สายการบิน/จองเดินทาง', ['airasia', 'แอร์เอเชีย', 'thai lion', 'ไทยไลออนแอร์', 'nok air', 'นกแอร์', 'thai airways', 'การบินไทย', 'vietjet', 'เวียตเจ็ท', 'bangkok airways', 'บางกอกแอร์เวย์ส', 'บขส', 'นครชัยแอร์', 'สมบัติทัวร์', 'ตั๋วเครื่องบิน', 'ตั๋วรถ', 'ตั๋วรถไฟ', 'agoda', 'อโกด้า', 'booking.com', 'traveloka', 'trip.com']),
+    R('car', 'travel', 'ดูแลรถ', ['ล้างรถ', 'ซ่อมรถ', 'เปลี่ยนยาง', 'ยางรถ', 'เปลี่ยนน้ำมันเครื่อง', 'b-quik', 'บี-ควิก', 'cockpit', 'ค็อกพิท', 'ต่อภาษีรถ', 'พ.ร.บ.']),
+
+    // --- ค่าใช้จ่ายคงที่ ---
+    R('housing', 'fixed', 'ค่าที่พัก', ['ค่าเช่า', 'ค่าห้อง', 'หอพัก', 'อพาร์ทเมนท์', 'อพาร์ตเมนต์', 'apartment', 'คอนโด', 'condo', 'นิติบุคคลอาคาร', 'ค่าส่วนกลาง', 'rent']),
+    R('utility', 'fixed', 'ค่าไฟ/ค่าน้ำ', ['ค่าไฟ', 'การไฟฟ้า', 'กฟน', 'กฟภ', 'mea', 'pea', 'ค่าน้ำประปา', 'การประปา', 'กปน', 'กปภ', 'mwa', 'pwa'], { re: /ค่าน้ำ(?!มัน|ดื่ม|แข็ง|เต้าหู้|หวาน)/ }),
+    R('telco', 'fixed', 'มือถือ/อินเทอร์เน็ต', ['ais', 'เอไอเอส', 'true', 'ทรูมูฟ', 'truemove', 'true online', 'ทรูออนไลน์', 'dtac', 'ดีแทค', '3bb', 'ทรีบีบี', 'nt', 'tot', 'internet', 'อินเทอร์เน็ต', 'เน็ตบ้าน', 'ค่าเน็ต', 'ค่าโทรศัพท์', 'ค่ามือถือ', 'เติมเงินมือถือ', 'เติมเงินโทรศัพท์']),
+    R('insurance', 'fixed', 'ประกัน/ภาษี', ['ประกัน', 'เบี้ยประกัน', 'aia', 'เอไอเอ', 'เมืองไทยประกัน', 'allianz', 'อลิอันซ์', 'fwd', 'ไทยประกันชีวิต', 'กรุงเทพประกันภัย', 'ทิพยประกัน', 'วิริยะ', 'ประกันสังคม', 'ภาษี', 'สรรพากร']),
+    R('debt', 'fixed', 'ผ่อน/บัตรเครดิต/สินเชื่อ', ['บัตรเครดิต', 'credit card', 'ktc', 'เคทีซี', 'first choice', 'เฟิร์สช้อยส์', 'aeon', 'อิออน', 'citi', 'ซิตี้แบงก์', 'ผ่อน', 'ค่างวด', 'งวดรถ', 'ไฟแนนซ์', 'finance', 'ลีสซิ่ง', 'leasing', 'สินเชื่อ', 'loan', 'เงินกู้', 'กยศ', 'เงินติดล้อ', 'ศรีสวัสดิ์', 'เมืองไทยแคปปิตอล']),
+    R('subscription', 'fixed', 'สมาชิกรายเดือน', ['netflix', 'spotify', 'youtube premium', 'youtube', 'icloud', 'apple.com/bill', 'google one', 'disney', 'viu', 'wetv', 'iqiyi', 'prime video', 'openai', 'chatgpt', 'ค่าสมาชิก', 'subscription', 'ฟิตเนส', 'fitness', 'gym', 'ยิม']),
+    R('education', 'fixed', 'การศึกษา', ['ค่าเทอม', 'ค่าเรียน', 'tuition', 'มหาวิทยาลัย', 'โรงเรียน', 'กวดวิชา']),
+
+    // --- ช้อปปิ้ง ---
+    R('online', 'shop', 'ช้อปออนไลน์', ['shopee', 'ช้อปปี้', 'shopeepay', 'lazada', 'ลาซาด้า', 'tiktok shop', 'tiktok', 'ติ๊กต็อก', 'temu', 'aliexpress', 'ซื้อของออนไลน์']),
+    R('retail', 'shop', 'ห้าง/แฟชั่น/ความงาม/ของใช้', ['ช้อปปิ้ง', 'ซื้อของ', 'ของใช้', 'central', 'เซ็นทรัล', 'robinson', 'โรบินสัน', 'the mall', 'เดอะมอลล์', 'paragon', 'พารากอน', 'emporium', 'emquartier', 'terminal 21', 'mbk', 'uniqlo', 'ยูนิโคล่', 'h&m', 'zara', 'watsons', 'วัตสัน', 'boots', 'บู๊ทส์', 'eve and boy', 'beautrium', 'sephora', 'konvy', 'power buy', 'banana it', 'studio 7', 'jib', 'advice', 'homepro', 'โฮมโปร', 'index living', 'ikea', 'อิเกีย', 'thai watsadu', 'ไทวัสดุ', 'global house', 'โกลบอลเฮ้าส์', 'daiso', 'ไดโซ', 'mr. diy', 'mr.diy', 'miniso', 'muji', 'มูจิ', 'decathlon', 'supersports', 'nike', 'adidas', 'b2s', 'se-ed', 'ซีเอ็ด', 'kinokuniya', 'เสื้อ', 'กางเกง', 'รองเท้า', 'กระเป๋า', 'เครื่องสำอาง', 'สกินแคร์', 'shopping', 'mall', 'store']),
+
+    // --- อื่นๆ (ระบุชนิดไว้ในเหตุผล) ---
+    R('health', 'other', 'สุขภาพ', ['โรงพยาบาล', 'รพ.', 'hospital', 'คลินิก', 'clinic', 'ร้านยา', 'ขายยา', 'เภสัช', 'pharmacy', 'ค่ายา', 'ทันตกรรม', 'ทำฟัน', 'ค่าหมอ', 'ตรวจสุขภาพ']),
+    R('fun', 'other', 'บันเทิง', ['major cineplex', 'เมเจอร์', 'sf cinema', 'เอสเอฟ', 'ดูหนัง', 'ตั๋วหนัง', 'โรงหนัง', 'คอนเสิร์ต', 'concert', 'ticketmelon', 'thaiticketmajor', 'เติมเกม', 'steam', 'playstation', 'garena', 'การีน่า', 'คาราโอเกะ', 'โบว์ลิ่ง']),
+    R('merit', 'other', 'ทำบุญ/งานสังคม', ['ทำบุญ', 'บริจาค', 'มูลนิธิ', 'ซองงาน', 'งานแต่ง', 'งานบวช', 'งานศพ', 'ของขวัญ', 'ใส่ซอง']),
+    R('service', 'other', 'บริการส่วนตัว', ['ตัดผม', 'ร้านทำผม', 'ทำเล็บ', 'เสริมสวย', 'นวด', 'สปา', 'spa', 'ซักผ้า', 'ซักรีด', 'laundry', 'otteri']),
+    R('parcel', 'other', 'ส่งพัสดุ', ['ไปรษณีย์', 'ems', 'kerry', 'เคอรี่', 'flash express', 'แฟลช', 'j&t', 'best express', 'ส่งของ', 'ค่าส่ง']),
+  ];
+
+  /* ---------- ตัวจับคำ ---------- */
+  const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const isLatin = s => /^[a-z0-9 .&'/:+-]+$/i.test(s);
+  function compile(terms) {
+    const parts = terms.map(t => (isLatin(t) ? `(?:^|[^a-z0-9])${escRe(t.toLowerCase())}(?![a-z0-9])` : escRe(t.toLowerCase())));
+    return new RegExp(parts.join('|'), 'i');
+  }
+  RULES.forEach(r => { r.re = compile(r.terms); });
+  const EXPL = EXPLICIT.map(([cat, terms]) => ({ cat, re: new RegExp('^\\s*(' + terms.map(escRe).join('|') + ')\\s*$', 'i'), re2: new RegExp('(?:^|\\s)(' + terms.filter(t => t.startsWith('#')).map(escRe).join('|') + ')(?:\\s|$)', 'i') }));
+
+  const norm = s => (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  function matchRule(text) {
+    const t = norm(text);
+    if (!t) return null;
+    const tNo = t.replace(/([\u0E00-\u0E7F])\s+(?=[\u0E00-\u0E7F])/g, '$1');
+    for (const r of RULES) {
+      if (r.re.test(' ' + t) || r.re.test(tNo) || (r.extra && r.extra.re && r.extra.re.test(t))) return r;
+    }
+    return null;
+  }
+  function matchExplicit(memo) {
+    const t = norm(memo);
+    if (!t) return null;
+    for (const e of EXPL) if (e.re.test(t) || e.re2.test(t)) return e.cat;
+    return null;
+  }
+
+  /* ---------- ชื่อคน / ชื่อเจ้าของ ---------- */
+  const TITLE_RE = /^(นาย|นางสาว|นาง|น\.ส\.?|ด\.ช\.?|ด\.ญ\.?|mr\.?|mrs\.?|ms\.?|miss)\s*/i;
+  const ORG_RE = /บจก|บริษัท|หจก|ห้างหุ้นส่วน|ร้าน|จำกัด|มหาชน|co\.|ltd|limited|inc\b|shop|store|สาขา|มูลนิธิ|โรงพยาบาล|การไฟฟ้า|การประปา|ธนาคาร/i;
+  // 'title' = มีคำนำหน้าชื่อ (แน่ใจ), 'shape' = หน้าตาเหมือนชื่อ-นามสกุล (ใช้เมื่อไม่เข้ากฎร้าน)
+  function personKind(name) {
+    const n = (name || '').trim();
+    if (!n || ORG_RE.test(n)) return '';
+    if (TITLE_RE.test(n)) return 'title';
+    return /^[\u0E00-\u0E7F]{2,}\s[\u0E00-\u0E7F]{1,}\.?$/.test(n) || /^[a-z]{2,}\s[a-z]{1,}\.?$/i.test(n) ? 'shape' : '';
+  }
+  const isPerson = name => !!personKind(name);
+  const nameToks = s => (s || '').toLowerCase().replace(TITLE_RE, '').replace(/[.()]/g, ' ').split(/\s+/).filter(Boolean);
+  // ทนชื่อที่ธนาคารปิดบางส่วน เช่น "สมชาย ใ" หรือ "somchai j"
+  function sameName(a, b) {
+    const x = nameToks(a), y = nameToks(b);
+    if (!x.length || !y.length) return false;
+    const f1 = x[0], f2 = y[0];
+    if (!(f1 === f2 || (f1.length >= 3 && f2.length >= 3 && (f1.startsWith(f2) || f2.startsWith(f1))))) return false;
+    if (x.length < 2 || y.length < 2) return true;
+    return x[1].startsWith(y[1]) || y[1].startsWith(x[1]);
+  }
+  function isOwner(name, owners) { return !!name && (owners || []).some(o => sameName(name, o)); }
+
+  /* ---------- ตัวตัดสิน ---------- */
+  // ctx: { sender, shop, memo, owners: [], memory: {cat} | null }
+  function classify(ctx) {
+    const { sender = '', shop = '', memo = '', owners = [], memory = null } = ctx || {};
+    const meSend = isOwner(sender, owners), meRecv = isOwner(shop, owners);
+    if (meSend && meRecv) return { cat: 'transfer', source: 'owner', rule: 'self', label: 'โอนระหว่างบัญชีตัวเอง', conf: 'high' };
+    if (meRecv) {
+      const m = matchRule(memo);
+      if (!sender && ((m && m.cat === 'transfer') || matchExplicit(memo) === 'transfer')) return { cat: 'transfer', source: 'owner', rule: 'self', label: 'โอนเข้าบัญชีตัวเอง (จากบันทึกช่วยจำ)', conf: 'mid' };
+      return { cat: 'income', source: 'owner', rule: 'incoming', label: sender ? 'มีคนโอนเข้าบัญชีคุณ' : 'ผู้รับคือคุณ (ไม่เห็นชื่อผู้ส่ง)', conf: sender ? 'high' : 'mid' };
+    }
+    const ex = matchExplicit(memo);
+    if (ex) return { cat: ex, source: 'memo', rule: 'explicit', label: 'ระบุหมวดในบันทึกช่วยจำ', conf: 'high' };
+    const mr = matchRule(memo);
+    if (mr) return { cat: mr.cat, source: 'memo', rule: mr.id, label: mr.label, conf: (mr.extra && mr.extra.conf) || 'high' };
+    if (memory && memory.cat) return { cat: memory.cat, source: 'memory', rule: 'memory', label: 'ร้านที่คุณสอนไว้', conf: 'high' };
+    const pk = personKind(shop);
+    if (pk !== 'title') {
+      const sr = matchRule(shop);
+      if (sr) return { cat: sr.cat, source: 'shop', rule: sr.id, label: sr.label, conf: (sr.extra && sr.extra.conf) || (pk ? 'mid' : 'high') };
+    }
+    if (pk) return { cat: 'other', source: 'person', rule: 'person', label: 'โอนให้บุคคล ไม่มีบันทึกช่วยจำ', conf: 'low' };
+    return { cat: 'other', source: 'none', rule: 'none', label: 'ไม่เข้ากฎใด', conf: 'low' };
+  }
+  function guessCat(text) { const r = matchRule(text); return r ? r.cat : 'other'; }
+
+  const api = { RULES, EXPLICIT, classify, guessCat, matchRule, isPerson, isOwner, sameName };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.BanRodRules = api;
+})(this);
+
+/* บ้านรอด AI — เครื่องคำนวณงบ (กติกาสโคป 3) + ตัวอ่านข้อความสลิป
+   ทุกตัวเลขคำนวณด้วยโค้ดล้วน ไม่ใช้ AI */
+(function (root) {
+  const floor = Math.floor;
+  const num = v => (Number.isFinite(+v) ? +v : 0);
+  const sum = a => a.reduce((x, y) => x + num(y), 0);
+
+  function incomeBase(s) { return s.mode === 'careful' ? num(s.incomeMin) : num(s.incomeNormal); }
+  function debtMin(s) { return num((s.debt || {}).minPay); }
+  // ขั้นต่ำบัตรนับเป็นค่าใช้จ่ายคงที่อีกรายการ
+  function fixedTotal(s) { return sum((s.fixed || []).map(f => f.amount)) + debtMin(s); }
+  function monthPot(s, income) { return income - fixedTotal(s) - num(s.reserve); }
+  function monthlyInterest(s) { const d = s.debt || {}; return floor(num(d.balance) * num(d.apr) / 100 / 12); }
+
+  // กติกา 1: แบ่ง B ตามสัดส่วน ปัดลง เศษให้หมวดที่ลดทีหลังสุด (ตัวสุดท้ายในลำดับ)
+  function splitCats(B, cats) {
+    const W = sum(cats.map(c => c.weight));
+    const out = cats.map(c => (W > 0 ? floor(B * num(c.weight) / W) : 0));
+    if (cats.length) out[cats.length - 1] += B - sum(out);
+    return out;
+  }
+  // กติกา 2: ลดตามลำดับ หมวดแรกลดถึงเพดานก่อน
+  function reduceCats(cb, cats, D) {
+    let left = D;
+    const red = cats.map((c, i) => {
+      const cap = floor(cb[i] * num(c.cap));
+      const r = Math.max(0, Math.min(cap, left));
+      left -= r;
+      return r;
+    });
+    return { red, C: D - left, short: left };
+  }
+  const NOT_BUDGET = { fixed: 1, transfer: 1, income: 1 };
+  const isAdjustable = t => !NOT_BUDGET[t.cat] && t.day >= 0; // กติกา 6, 8 + โอน/รายรับไม่หักงบ
+
+  function replay(s, data, todayIdx) {
+    const days = Math.max(1, num(s.days));
+    const n = Math.min(Math.max(todayIdx, 0), days - 1);
+    let income = incomeBase(s);
+    let M = monthPot(s, income);
+    let B = floor(M / days);
+    let D = 0, bucket = 0, carry = 0, spent = 0;
+    const hist = [];
+    for (let d = 0; d <= n; d++) {
+      const notes = [];
+      const evs = (data.incomes || []).filter(e => e.day === d);
+      if (evs.length) { // กติกา 5
+        income = num(evs[evs.length - 1].amount);
+        M = monthPot(s, income);
+        B = floor((M - spent - bucket) / (days - d));
+        D = 0; carry = 0;
+        notes.push({ k: 'income', income, M, spent, bucket, left: days - d });
+      }
+      if ((data.covers || []).some(c => c.day === d) && D > 0 && bucket > 0) { // กติกา 4
+        const a = Math.min(D, bucket);
+        D -= a; bucket -= a;
+        notes.push({ k: 'cover', amt: a });
+      }
+      const Bd = Math.max(B, 0);
+      const cb = splitCats(Bd, s.cats);
+      const Dstart = D;
+      const r = reduceCats(cb, s.cats, D);
+      const catT = cb.map((v, i) => v - r.red[i]);
+      if (catT.length) catT[catT.length - 1] += carry;
+      const T = Bd - r.C + carry;
+      const dayTx = (data.txns || []).filter(t => t.day === d && isAdjustable(t));
+      const U = sum(dayTx.map(t => t.amount));
+      const catU = s.cats.map(c => sum(dayTx.filter(t => t.cat === c.id).map(t => t.amount)));
+      hist.push({ day: d, B: Bd, T, C: r.C, red: r.red, cb, catT, catU, Dstart, short: r.short, carry, U, bucket, notes, negative: B < 0 });
+      let next = 0;
+      if (d < n) { // กติกา 3: ปิดวัน
+        if (U > T) D = D - r.C + (U - T);
+        else {
+          D = D - r.C;
+          const lo = T - U;
+          if (s.leftoverMode === 'tomorrow') next = lo; else bucket += lo;
+        }
+        spent += U;
+      }
+      carry = next;
+    }
+    return { today: hist[n], hist, D, bucket, income, M, dayIdx: n, days, daysLeft: days - n };
+  }
+
+  /* ---------- ตัวอ่านข้อความสลิป ---------- */
+  const TH_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+  // OCR ไทยมักเว้นวรรคทุกไม่กี่ตัวอักษร: ยุบเฉพาะบรรทัดที่เว้นถี่ผิดปกติ บรรทัดปกติคงช่องว่างของชื่อไว้
+  function squashThai(t) {
+    return t.split(/\r?\n/).map(l => {
+      const th = (l.match(/[฀-๿]/g) || []).length;
+      const sp = (l.match(/[฀-๿][ \t]+(?=[฀-๿])/g) || []).length;
+      return th && sp / th > 0.2 ? l.replace(/([฀-๿])[ \t]+(?=[฀-๿])/g, '$1') : l;
+    }).join('\n');
+  }
+  const BANK_RE = /^(ธ\.|ธนาคาร|bank|พร้อมเพย์|promptpay|k\s?plus|scb|ktb|bbl|kbank|ttb|gsb|ออมสิน)/i;
+  const ACCT_RE = /x{2,}|\d{3}-\d-\d{5}-\d|\*{2,}/i;
+  const SKIP_RE = /(สำเร็จ|เลขที่รายการ|รหัสอ้างอิง|ref|จำนวน|ค่าธรรมเนียม|บาท|amount|fee|สแกน|ตรวจสอบ|qr|บันทึกช่วยจำ|memo|วันที่|เวลา|\d{1,2}:\d{2})/i;
+
+  function parseAmount(lines) {
+    const cands = [];
+    lines.forEach((l, i) => {
+      if (/ค่าธรรมเนียม|fee/i.test(l)) return;
+      const ms = l.match(/\d{1,3}(?:,\d{3})+(?:\.\d{2})?|\d+\.\d{2}/g) || [];
+      ms.forEach(m => {
+        const v = parseFloat(m.replace(/,/g, ''));
+        if (v > 0) cands.push({ v, key: /จำนวน|ยอด|amount|total|บาท/i.test(l) || /จำนวน|amount/i.test(lines[i - 1] || '') });
+      });
+    });
+    const keyed = cands.filter(c => c.key);
+    const pool = keyed.length ? keyed : cands;
+    return pool.length ? Math.max(...pool.map(c => c.v)) : null;
+  }
+  function parseDate(text) {
+    const t = text.replace(/\s+/g, ' ');
+    for (let i = 0; i < 12; i++) {
+      const esc = TH_MONTHS[i].replace(/\./g, '\\.?\\s?');
+      const m = t.match(new RegExp('(\\d{1,2})\\s*' + esc + '\\s*(\\d{2,4})'));
+      if (m) return mkDate(+m[2], i + 1, +m[1]);
+    }
+    const m = t.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (m) return mkDate(+m[3], +m[2], +m[1]);
+    return null;
+  }
+  function mkDate(y, mo, d) {
+    if (y < 100) y += y >= 40 ? 2500 : 2000; // 69 → 2569 (พ.ศ.)
+    if (y > 2400) y -= 543;
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+  const TO_RE = /^(ไปยัง|ไปที่|ถึง|to|ผู้รับเงิน|ผู้รับ|ชื่อร้าน|ร้านค้า|ชื่อบัญชี|merchant|ชำระให้|จ่ายให้)\s*[:：]?\s*/i;
+  const MERCH_ID_RE = /รหัสร้านค้า|merchant\s*id|biller\s*id|รหัสผู้ให้บริการ|เลขประจำตัวผู้เสียภาษี/i;
+  function cleanName(l) {
+    return l.replace(TO_RE, '').replace(/\s{2,}/g, ' ').trim();
+  }
+  const nameLike = l => !BANK_RE.test(l) && !ACCT_RE.test(l) && !SKIP_RE.test(l) && !MERCH_ID_RE.test(l) && /[A-Za-z฀-๿]{2}/.test(l) && l.length <= 60;
+  // ทุกบรรทัดที่น่าจะเป็นชื่อ ให้ผู้ใช้แตะเลือก
+  function candidates(lines, best) {
+    const out = [];
+    const add = s => { s = cleanName(s); if (s.length >= 2 && !out.includes(s)) out.push(s); };
+    if (best) add(best);
+    lines.forEach(l => { if (nameLike(cleanName(l)) && cleanName(l).length >= 2) add(l); });
+    return out.slice(0, 6);
+  }
+  // เลขบัญชีปลายทาง (บรรทัดบัญชีสุดท้าย) ใช้เป็นตัวจำร้านที่ทนกว่าชื่อ
+  // เลขบัญชีของผู้รับเท่านั้น: บรรทัดเลขบัญชีที่อยู่ใต้ชื่อผู้รับไม่เกิน 2 บรรทัด
+  // สลิปพร้อมเพย์/QR มักไม่มีเลขผู้รับ ถ้าหยิบบรรทัดสุดท้ายจะได้เลขบัญชีของผู้ใช้เองทุกใบ
+  function parseAcct(lines, shop) {
+    if (!shop) return '';
+    const i = lines.findIndex(l => cleanName(l) === shop || cleanName(l).includes(shop));
+    if (i < 0) return '';
+    for (let j = i + 1; j <= i + 2 && j < lines.length; j++) {
+      if (ACCT_RE.test(lines[j])) { const d = lines[j].replace(/[^0-9]/g, ''); return d.length >= 3 ? d : ''; }
+      if (!BANK_RE.test(lines[j])) break;
+    }
+    return '';
+  }
+  // บันทึกช่วยจำที่ผู้ใช้เขียนตอนโอน (อยู่บรรทัดเดียวกันหรือบรรทัดถัดไป)
+  const MEMO_RE = /^(บันทึกช่วยจำ|บันทึก|memo|note|หมายเหตุ)\s*[:：]?\s*(.*)$/i;
+  function parseMemo(lines) {
+    for (let i = 0; i < lines.length; i++) {
+      const m = lines[i].match(MEMO_RE);
+      if (!m) continue;
+      if (m[2].trim()) return m[2].trim();
+      const nx = lines[i + 1] || '';
+      if (nx && !SKIP_RE.test(nx) && !ACCT_RE.test(nx)) return nx.trim();
+    }
+    return '';
+  }
+  // ชื่อที่ตามด้วยบรรทัดธนาคาร/เลขบัญชี: ตัวแรกคือผู้ส่ง ตัวสุดท้ายคือผู้รับ
+  function partyNames(lines) {
+    const names = [];
+    lines.forEach((l, i) => {
+      const next = lines[i + 1] || '';
+      if ((BANK_RE.test(next) || ACCT_RE.test(next)) && !BANK_RE.test(l) && !ACCT_RE.test(l) && !SKIP_RE.test(l) && /[A-Za-z\u0E00-\u0E7F]{2}/.test(l)) names.push(cleanName(l));
+    });
+    return names;
+  }
+  function parseSender(lines, shop) {
+    for (let i = 0; i < lines.length; i++) {
+      const m = lines[i].match(/^(จาก|from|ผู้โอน|ผู้ส่ง|ผู้ชำระ)\s*[:：]?\s*(.*)$/i);
+      if (m) { const v = m[2].trim() || (lines[i + 1] || '').trim(); if (v && !BANK_RE.test(v) && !ACCT_RE.test(v)) return cleanName(v); }
+    }
+    const names = partyNames(lines).filter(n => n !== shop);
+    return names.length ? names[0] : '';
+  }
+  function parseShop(lines) {
+    for (let i = 0; i < lines.length; i++) {
+      if (MERCH_ID_RE.test(lines[i]) && i > 0 && nameLike(lines[i - 1])) return cleanName(lines[i - 1]);
+    }
+    for (let i = 0; i < lines.length; i++) {
+      const m = lines[i].match(/^(ไปยัง|ไปที่|ถึง|to|ผู้รับเงิน|ผู้รับ|ชื่อร้าน|ร้านค้า|ชื่อบัญชี|merchant|ชำระให้|จ่ายให้)\s*[:：]?\s*(.*)$/i);
+      if (m) {
+        const rest = m[2].trim();
+        if (rest.length >= 2) return cleanName(rest);
+        const nx = lines.slice(i + 1).find(l => l && !BANK_RE.test(l) && !ACCT_RE.test(l));
+        if (nx) return cleanName(nx);
+      }
+    }
+    const names = partyNames(lines);
+    if (names.length) return names[names.length - 1]; // คนรับคือชื่อหลังสุด
+    const shopLine = lines.find(l => /ร้าน|shop|cafe|coffee/i.test(l) && !SKIP_RE.test(l));
+    return shopLine ? cleanName(shopLine) : '';
+  }
+  function parseSlip(raw) {
+    const text = squashThai(raw || '');
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const shop = parseShop(lines);
+    const memo = parseMemo(lines);
+    const sender = parseSender(lines, shop);
+    const cands = candidates(lines, shop).filter(c => c !== memo);
+    return { amount: parseAmount(lines), shop, sender, date: parseDate(text), acct: parseAcct(lines, shop), memo, candidates: cands, raw: raw || '' };
+  }
+
+  /* ---------- จัดหมวด: ใช้ชุดกฎใน rules.js ---------- */
+  const Rules = (typeof module !== 'undefined' && module.exports) ? require('./rules.js') : root.BanRodRules;
+  function shopKey(name) {
+    return (name || '').toLowerCase().replace(/^(ร้าน|บจก\.?|บริษัท|หจก\.?|นาย|นาง|น\.ส\.)\s*/g, '').replace(/(จำกัด|\(?มหาชน\)?)/g, '').replace(/[\s.,\-_'"()]/g, '');
+  }
+  // หาร้านที่จำไว้: ชื่อ (ตรง/เคยแก้) ก่อน เลขบัญชีเป็นทางสำรองเมื่ออ่านชื่อไม่ได้
+  // ร้านเดิมเปลี่ยนเลขบัญชี → เจอจากชื่อ; ชื่ออ่านเพี้ยน → เจอจากเลขบัญชี; บัญชีตัวกลางหลายร้าน → ชื่อชนะ
+  // อ่านชื่อได้แต่ไม่รู้จัก = ร้านใหม่ เลขบัญชีที่ตรงกับร้านเก่าเป็นแค่ข้อเสนอ (suggest) ให้ผู้ใช้กดยืนยัน
+  // ใช้เลขบัญชีจับคู่เองเฉพาะเมื่ออ่านชื่อไม่ได้เลย
+  function findShop(shops, aliases, name, acct) {
+    const k0 = shopKey(name);
+    if (k0 && shops[k0]) return { key: k0, via: '' };
+    if (k0 && aliases[k0] && shops[aliases[k0]]) return { key: aliases[k0], via: 'alias' };
+    const ka = acct && aliases['acct:' + acct];
+    const hasAcct = !!(ka && shops[ka]);
+    if (k0.length < 2 && hasAcct) return { key: ka, via: 'acct' };
+    return { key: k0, via: '', suggest: hasAcct ? ka : '' };
+  }
+  // บันทึกทางลัด: ถ้าทางลัดเดิมชี้ไปร้านอื่น แปลว่าใช้ร่วมกันหลายร้าน → ลบและห้ามใช้อีก
+  function learnAlias(aliases, k, key) {
+    if (!k || !key || k === key) return;
+    const banned = aliases.__shared || (aliases.__shared = {});
+    if (banned[k]) return;
+    if (aliases[k] && aliases[k] !== key) { delete aliases[k]; banned[k] = 1; return; }
+    aliases[k] = key;
+  }
+  const guessCat = t => Rules.guessCat(t);
+  const classify = ctx => Rules.classify(ctx);
+
+  const api = { incomeBase, fixedTotal, monthPot, monthlyInterest, splitCats, reduceCats, replay, parseSlip, shopKey, findShop, learnAlias, guessCat, classify, Rules, TH_MONTHS };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.BanRod = api;
+})(this);
+</script>
+<script>(function () {
+  const E = window.BanRod;
+  const KEY = 'banrod-v1';
+  const CAT_NAMES = { shop: 'ช้อปปิ้ง', coffee: 'กาแฟ', travel: 'เดินทาง', other: 'อื่นๆ', food: 'ค่ากิน', fixed: 'ค่าคงที่', transfer: 'โอน/ออม (ไม่นับงบ)', income: 'รายรับ' };
+  const SRC = { slip: 'สลิป', manual: 'พิมพ์เอง', sample: 'ตัวอย่าง' };
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const baht = v => '฿' + Math.round(v).toLocaleString('th-TH');
+  const n = v => (Number.isFinite(+v) ? +v : 0);
+
+  /* ---------- วันที่ ---------- */
+  const isoToday = () => { const d = new Date(); return iso(d); };
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const parseIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const diffDays = (a, b) => Math.round((parseIso(b) - parseIso(a)) / 864e5);
+  const addDays = (s, k) => { const d = parseIso(s); d.setDate(d.getDate() + k); return iso(d); };
+  const thDate = s => { const d = parseIso(s); return `${d.getDate()} ${E.TH_MONTHS[d.getMonth()]} ${String((d.getFullYear() + 543) % 100).padStart(2, '0')}`; };
+
+  /* ---------- ข้อมูลตัวอย่าง (ตรงกับชุดทดสอบ T1) ---------- */
+  function sampleState() {
+    const start = isoToday();
+    return {
+      sample: true,
+      settings: {
+        incomeNormal: 20000, incomeMin: 15000, mode: 'normal', reserve: 2000, days: 30, startDate: start, leftoverMode: 'bucket', owners: ['สมชาย ใจดี'],
+        fixed: [{ name: 'ค่าห้อง', amount: 5500, paid: false }, { name: 'ค่าไฟ-น้ำ', amount: 1200, paid: false }, { name: 'มือถือ + เน็ต', amount: 800, paid: false }, { name: 'ประกันสังคม', amount: 500, paid: false }],
+        debt: { balance: 0, minPay: 0, apr: 16, paid: false },
+        cats: [
+          { id: 'shop', weight: 83, cap: 1 }, { id: 'coffee', weight: 50, cap: 0.5 },
+          { id: 'travel', weight: 0, cap: 0 }, { id: 'other', weight: 0, cap: 0 }, { id: 'food', weight: 200, cap: 0.5 }],
+      },
+      txns: [
+        { id: 'x1', day: 0, amount: 55, shop: 'Amazon Café', cat: 'coffee', source: 'sample' },
+        { id: 'x2', day: 0, amount: 50, shop: 'ข้าวมันไก่ป้าศรี', cat: 'food', source: 'sample' },
+      ],
+      shops: {
+        [E.shopKey('Amazon Café')]: { name: 'Amazon Café', cat: 'coffee', note: 'ร้านกาแฟหน้าออฟฟิศ', created: start },
+        [E.shopKey('ข้าวมันไก่ป้าศรี')]: { name: 'ข้าวมันไก่ป้าศรี', cat: 'food', note: 'ข้าวกลางวัน', created: start },
+      },
+      incomes: [], covers: [], offset: 0, aliases: {},
+    };
+  }
+  let S;
+  try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) { S = null; }
+  if (!S || !S.settings) S = sampleState();
+  if (!S.settings.owners) S.settings.owners = [];
+  if (!S.aliases) S.aliases = {}; // ชื่อที่อ่านเพี้ยน / เลขบัญชี → ร้านที่จำไว้
+  if (!S.aliasV2) { // ล้างทางลัดเลขบัญชีที่ตัวอ่านรุ่นเก่าอาจผูกผิด (เลขบัญชีของผู้ใช้เอง)
+    Object.keys(S.aliases).forEach(k => { if (k.startsWith('acct:')) delete S.aliases[k]; });
+    S.aliasV2 = true;
+  }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+  const todayIdx = () => diffDays(S.settings.startDate, isoToday()) + n(S.offset);
+  const dayDate = i => addDays(S.settings.startDate, i);
+  const calc = () => E.replay(S.settings, S, todayIdx());
+
+  let tab = 'today';
+  let draft = null;
+  let flash = '';
+
+  /* ---------- หน้า "วันนี้" ---------- */
+  function explain(r) {
+    const t = r.today, out = [];
+    t.notes.forEach(x => {
+      if (x.k === 'income') out.push(`รายได้เดือนนี้เปลี่ยนเป็น ${baht(x.income)} คิดใหม่จากเงินที่เหลือ ${baht(x.M - x.spent - x.bucket)} หาร ${x.left} วัน ได้งบวันละ ${baht(t.B)} ยอดค้างเดิมรวมอยู่ในสูตรนี้แล้ว`);
+      if (x.k === 'cover') out.push(`ใช้ถังสำรอง ${baht(x.amt)} ปิดยอดค้างตามที่คุณเลือก`);
+    });
+    if (t.C > 0) {
+      const parts = S.settings.cats.map((c, i) => t.red[i] > 0 ? `${CAT_NAMES[c.id]} ${baht(t.red[i])}` : '').filter(Boolean);
+      out.push(`มียอดใช้เกินค้าง ${baht(t.Dstart)} วันนี้ลด${parts.join(' และ ')} รวม ${baht(t.C)}`);
+    }
+    if (t.short > 0) out.push(`ลดเต็มเพดานทุกหมวดแล้ว ยังค้างอีก ${baht(t.short)} ยกไปพรุ่งนี้ เดือนนี้ค่อนข้างตึง`);
+    if (t.carry > 0) out.push(`ยกเงินที่เหลือจากเมื่อวานมาเพิ่ม ${baht(t.carry)}`);
+    if (t.negative) out.push('รายได้ที่ใช้คำนวณไม่พอจ่ายค่าคงที่ ขั้นต่ำบัตร และเงินสำรอง งบรายวันจึงเป็น 0');
+    if (!out.length) out.push(`งบปกติ วันละ ${baht(t.B)} ยังไม่มียอดค้าง`);
+    return out;
+  }
+  function viewToday() {
+    const r = calc(), t = r.today, s = S.settings;
+    const left = t.T - t.U;
+    const pct = t.T > 0 ? Math.min(100, Math.round(t.U / t.T * 100)) : 100;
+    const dataDays = new Set(S.txns.filter(x => x.day >= 0 && x.day <= r.dayIdx).map(x => x.day)).size;
+    const todays = S.txns.filter(x => x.day === r.dayIdx);
+    const incomeIn = S.txns.filter(x => x.cat === 'income' && x.day >= 0 && x.day <= r.dayIdx).reduce((a, x) => a + n(x.amount), 0);
+    const interest = E.monthlyInterest(s);
+    const fixedSum = E.fixedTotal(s);
+    const catRows = s.cats.map((c, i) => ({ c, b: t.catT[i], u: t.catU[i] })).filter(x => x.b > 0 || x.u > 0);
+    return `
+    <section class="hero ${left < 0 ? 'is-over' : ''}">
+      <div class="hero-top">
+        <span class="eyebrow">${left < 0 ? 'วันนี้ใช้เกินแล้ว' : 'วันนี้ใช้ได้อีก'}</span>
+        ${dataDays < 7 ? '<span class="chip chip-warn" title="จะหายเมื่อมีรายการจริงครบ 7 วัน">ประมาณการ</span>' : ''}
+      </div>
+      <div class="big num">${baht(Math.abs(left))}</div>
+      <div class="bar" role="img" aria-label="ใช้ไป ${pct}% ของงบวันนี้"><span style="width:${pct}%"></span></div>
+      <div class="hero-meta num"><span>งบวันนี้ ${baht(t.T)}</span><span>ใช้ไป ${baht(t.U)}</span></div>
+    </section>
+
+    <section class="why">
+      <h2>ทำไมได้เท่านี้</h2>
+      ${explain(r).map(l => `<p>${esc(l)}</p>`).join('')}
+      ${t.short > 0 && r.bucket > 0 ? `<button class="btn btn-ghost" data-act="cover">ใช้ถังสำรอง (${baht(r.bucket)}) ปิดยอดค้าง</button>` : ''}
+    </section>
+
+    ${catRows.length ? `<section class="block"><h2>งบแต่ละหมวดวันนี้</h2><ul class="cats">
+      ${catRows.map(x => { const p = x.b > 0 ? Math.min(100, Math.round(x.u / x.b * 100)) : 100; return `
+        <li><div class="cat-line"><span>${CAT_NAMES[x.c.id]}</span><span class="num ${x.u > x.b ? 'bad' : ''}">${baht(x.u)} / ${baht(x.b)}</span></div>
+        <div class="bar thin ${x.u > x.b ? 'over' : ''}"><span style="width:${p}%"></span></div></li>`; }).join('')}
+    </ul></section>` : ''}
+
+    <section class="block">
+      <div class="h-row"><h2>รายการวันนี้</h2><button class="btn btn-small" data-act="go-add">+ เพิ่มสลิป</button></div>
+      ${todays.length ? `<ul class="tx">${todays.map(x => `
+        <li><div><strong>${esc(x.shop || 'ไม่ระบุร้าน')}</strong><span class="sub">${x.memo ? `“${esc(x.memo)}” · ` : ''}${CAT_NAMES[x.cat] || x.cat} · <span class="src src-${x.source}">${SRC[x.source] || x.source}</span>${x.edited ? ' · แก้เอง' : ''}</span></div>
+        <div class="tx-r"><span class="num ${x.cat === 'income' ? 'in' : ''}">${x.cat === 'income' ? '+' : ''}${baht(x.amount)}</span><button class="icon-btn" data-act="del-tx" data-id="${x.id}" aria-label="ลบรายการ ${esc(x.shop)}">ลบ</button></div></li>`).join('')}</ul>`
+        : '<p class="empty">ยังไม่มีรายการวันนี้ เลือกรูปสลิปเพื่อเริ่มจด</p>'}
+    </section>
+
+    <section class="block">
+      <h2>ค่าใช้จ่ายคงที่เดือนนี้ <span class="num muted">${baht(fixedSum)}</span></h2>
+      <ul class="fixed">
+        ${s.fixed.map((f, i) => `<li><label><input type="checkbox" id="fx-${i}" data-act="paid" data-i="${i}" ${f.paid ? 'checked' : ''}> ${esc(f.name)}</label><span class="num">${baht(f.amount)}</span></li>`).join('')}
+        ${n(s.debt.minPay) > 0 ? `<li><label><input type="checkbox" id="fx-debt" data-act="paid-debt" ${s.debt.paid ? 'checked' : ''}> ขั้นต่ำบัตรเครดิต</label><span class="num">${baht(s.debt.minPay)}</span></li>` : ''}
+      </ul>
+      ${n(s.debt.balance) > 0 ? `<p class="debt num">หนี้บัตรค้าง ${baht(s.debt.balance)} · ดอกเบี้ย ${n(s.debt.apr)}% ต่อปี ≈ ${baht(interest)} ต่อเดือน</p>` : ''}
+    </section>
+
+    ${incomeIn > 0 ? `<section class="block"><div class="h-row"><h2>รับเข้ารอบนี้ <span class="num in">${baht(incomeIn)}</span></h2></div>
+      <p class="muted small">จากสลิปที่คุณเป็นผู้รับ เทียบกับที่ตั้งไว้ ${baht(E.incomeBase(s))} งบยังคิดจากค่าที่ตั้งไว้ ถ้ารายได้ทั้งรอบชัดแล้ว ใส่ที่ "รายได้เดือนนี้เข้าจริง" ด้านล่าง</p></section>` : ''}
+    <section class="block ledger">
+      <h2>ที่มาของงบ</h2>
+      <dl class="num">
+        <dt>รายได้ที่ใช้คำนวณ${S.incomes.length ? ' (รายได้จริง)' : s.mode === 'careful' ? ' (ต่ำสุด)' : ' (ปกติ)'}</dt><dd>${baht(r.income)}</dd>
+        <dt>− ค่าคงที่ + ขั้นต่ำบัตร</dt><dd>${baht(fixedSum)}</dd>
+        <dt>− เงินสำรองที่กันไว้</dt><dd>${baht(s.reserve)}</dd>
+        <dt class="strong">ถังรายเดือน</dt><dd class="strong">${baht(r.M)}</dd>
+        <dt>ถังสำรองสะสม</dt><dd>${baht(r.bucket)}</dd>
+        <dt>ยอดค้างที่ยกมา</dt><dd>${baht(t.Dstart)}</dd>
+      </dl>
+    </section>
+
+    <section class="block demo">
+      <h2>ควบคุมเดโม</h2>
+      <p class="muted small">วันที่ ${r.dayIdx + 1} จาก ${r.days} · ${thDate(dayDate(r.dayIdx))}</p>
+      <div class="row">
+        <button class="btn btn-ghost" data-act="prev-day" ${r.dayIdx <= 0 ? 'disabled' : ''}>← ย้อน 1 วัน</button>
+        <button class="btn btn-ghost" data-act="next-day" ${r.dayIdx >= r.days - 1 ? 'disabled' : ''}>ปิดวันนี้ ไปวันถัดไป →</button>
+      </div>
+      <form class="row" data-form="income">
+        <label class="grow" for="inc-real">รายได้เดือนนี้เข้าจริง (บาท)
+          <input id="inc-real" type="number" inputmode="numeric" min="0" step="1" placeholder="เช่น 14000" required></label>
+        <button class="btn" type="submit">คำนวณใหม่</button>
+      </form>
+      ${S.incomes.length ? '<button class="btn btn-link" data-act="clear-income">ยกเลิกรายได้จริง กลับไปใช้ค่าที่ตั้ง</button>' : ''}
+    </section>`;
+  }
+
+  /* ---------- หน้าเพิ่มสลิป ---------- */
+  function sampleSlips() {
+    const d = thDate(dayDate(Math.max(0, todayIdx())));
+    return [
+      { label: 'โอนให้ร้านตามสั่ง ฿60', text: `โอนเงินสำเร็จ\n${d} 12:31 น.\nนาย สมชาย ใจดี\nธ.กสิกรไทย\nxxx-x-x1234-x\nร้านป้าแดง ตามสั่ง\nธ.กรุงไทย\nxxx-x-x5678-x\nเลขที่รายการ: 015288123456\nจำนวน: 60.00 บาท\nค่าธรรมเนียม: 0.00 บาท` },
+      { label: 'จ่ายร้านกาแฟ ฿65', text: `ชำระเงินสำเร็จ\n${d} 08:02\nไปยัง\nAmazon Café\nPromptPay\nจำนวนเงิน\n65.00 บาท` },
+      { label: 'โอนให้เพื่อน มีบันทึกช่วยจำ ฿120', text: `โอนเงินสำเร็จ\n${d} 19:05 น.\nนาย สมชาย ใจดี\nธ.กสิกรไทย\nxxx-x-x1234-x\nน.ส. มะลิ ดีงาม\nธ.กรุงเทพ\nxxx-x-x4321-x\nจำนวน: 120.00 บาท\nบันทึกช่วยจำ: ค่าข้าวเย็น` },
+      { label: 'เพื่อนโอนคืน ฿500 (รายรับ)', text: `โอนเงินสำเร็จ\n${d} 20:15 น.\nน.ส. มะลิ ดีงาม\nธ.กรุงเทพ\nxxx-x-x4321-x\nนาย สมชาย ใจดี\nธ.กสิกรไทย\nxxx-x-x1234-x\nจำนวน: 500.00 บาท\nบันทึกช่วยจำ: คืนค่าข้าว` },
+      { label: 'จ่ายบิลค่าไฟ ฿845 (ค่าคงที่)', text: `ชำระเงินสำเร็จ\n${d} 09:30\nจาก\nนาย สมชาย ใจดี\nไปยัง\nการไฟฟ้านครหลวง\nจำนวน 845.00 บาท` },
+      { label: 'Shopee ฿349', text: `ชำระเงินสำเร็จ\n${d} 21:40\nไปยัง SHOPEEPAY\nธ.ไทยพาณิชย์\nจำนวน 349.00 บาท` },
+    ];
+  }
+  function viewAdd() {
+    if (draft) return viewReview();
+    return `
+    <section class="block pick">
+      <h2>เพิ่มรายจ่ายจากสลิป</h2>
+      <p class="muted">แอปอ่านเฉพาะรูปที่คุณเลือกทีละรูป อ่านบนเครื่องนี้ และไม่เก็บรูปไว้ เก็บแค่ยอด ร้าน และวันที่</p>
+      <label class="drop" for="slip-file">
+        <span class="drop-title">เลือกรูปสลิป</span>
+        <span class="muted small">PNG หรือ JPG จากอัลบั้ม</span>
+        <input id="slip-file" type="file" accept="image/*" data-act="file">
+      </label>
+      <p class="status" id="ocr-status" aria-live="polite">${esc(flash)}</p>
+      <div class="h-row"><h3>ไม่มีสลิปติดมือ</h3><button class="btn btn-small btn-ghost" data-act="manual">พิมพ์เอง</button></div>
+      <p class="muted small">สลิปตัวอย่าง ส่งข้อความแบบที่ OCR อ่านได้เข้าตัวแยกยอด/ร้าน/วันที่ ใช้ซ้อมเดโมเมื่อไม่มีเน็ต</p>
+      <div class="samples">${sampleSlips().map((x, i) => `<button class="btn btn-ghost" data-act="sample-slip" data-i="${i}">${esc(x.label)}</button>`).join('')}</div>
+      <button class="btn btn-link" data-act="warm-ocr">เตรียม OCR ล่วงหน้า (โหลดภาษาไทยครั้งแรก)</button>
+    </section>`;
+  }
+  // เดาว่าสลิปค่าคงที่นี้คือรายการไหนในค่าคงที่ที่ตั้งไว้ (กฎกลุ่มเดียวกัน)
+  function fixedGuess(cls) {
+    if (cls.cat !== 'fixed') return '';
+    if (cls.rule === 'debt' && n(S.settings.debt.minPay) > 0) return 'debt';
+    const i = S.settings.fixed.findIndex(f => { const m = E.Rules.matchRule(f.name); return m && m.id === cls.rule; });
+    return i >= 0 ? String(i) : '';
+  }
+  function openDraft(p, source, msg) {
+    const k0 = E.shopKey(p.shop);
+    const hit = E.findShop(S.shops, S.aliases, p.shop, p.acct);
+    const known = S.shops[hit.key];
+    if (known) p.shop = known.name;
+    const idx = todayIdx();
+    let day = idx;
+    if (p.date) { const di = diffDays(S.settings.startDate, p.date); if (di <= idx) day = di; }
+    const cls = E.classify({ sender: p.sender, shop: p.shop, memo: p.memo, owners: S.settings.owners, memory: known });
+    draft = {
+      amount: p.amount ?? '', shop: p.shop || '', day, source,
+      cat: cls.cat, cls, sender: p.sender || '',
+      memo: p.memo || '', note: p.memo || '', known: !!known, fixedIdx: fixedGuess(cls), msg: msg || '',
+      orig: { amount: p.amount, shop: p.shop, readShop: k0 }, acct: p.acct || '',
+      candidates: (p.candidates || []).filter(c => c !== p.shop), raw: p.raw || '', via: known ? hit.via : '', suggest: !known && hit.suggest ? hit.suggest : '',
+    };
+    flash = '';
+    tab = 'add';
+    render();
+  }
+  function catOptions(sel) {
+    return Object.keys(CAT_NAMES).map(k => `<option value="${k}" ${k === sel ? 'selected' : ''}>${CAT_NAMES[k]}</option>`).join('');
+  }
+  const SOURCE_TXT = { owner: 'ชื่อผู้ส่ง/ผู้รับ', memo: 'บันทึกช่วยจำ', memory: 'ความจำร้าน', shop: 'ชื่อร้าน', person: 'ผู้รับเป็นบุคคล', none: 'ไม่เข้ากฎ' };
+  function reasonBox(d) {
+    const c = d.cls; if (!c) return '';
+    const me = d.sender && E.Rules.isOwner(d.sender, S.settings.owners);
+    return `<div class="reason conf-${c.conf}">
+      ${d.sender ? `<p><span class="muted">ผู้ส่ง</span> ${esc(d.sender)}${me ? ' <span class="chip">คุณ</span>' : ''}</p>` : ''}
+      ${d.memo ? `<p><span class="muted">บันทึกช่วยจำ</span> “${esc(d.memo)}”</p>` : ''}
+      <p><span class="muted">จัดหมวดจาก${SOURCE_TXT[c.source]}</span> ${esc(c.label)} → <strong>${CAT_NAMES[c.cat]}</strong>${c.conf === 'low' ? ' · เลือกหมวดเองได้ แอปจะจำไว้' : c.conf === 'mid' ? ' · ตรวจอีกครั้ง' : ''}</p>
+    </div>`;
+  }
+  function viewReview() {
+    const d = draft, s = S.settings;
+    const known = S.shops[E.shopKey(d.shop)];
+    return `
+    <form class="block review" data-form="review">
+      <h2>ตรวจก่อนบันทึก</h2>
+      ${d.msg ? `<p class="note">${esc(d.msg)}</p>` : ''}
+      <label for="rv-amount">ยอดเงิน (บาท)<input id="rv-amount" name="amount" type="number" inputmode="decimal" min="0" step="0.01" value="${esc(d.amount)}" required></label>
+      <label for="rv-shop">ร้าน / ผู้รับ<input id="rv-shop" name="shop" value="${esc(d.shop)}" required autocomplete="off"></label>
+      ${!known && d.suggest && S.shops[d.suggest] ? `<div class="picks"><span class="muted small">เลขบัญชีผู้รับนี้เคยจ่ายให้ร้านนี้ ถ้าเป็นร้านเดิมให้แตะ ถ้าไม่ใช่ บันทึกเป็นร้านใหม่ได้เลย</span>
+        <button type="button" class="pick-chip" data-act="use-suggest">ใช่ ${esc(S.shops[d.suggest].name)}</button></div>` : ''}
+      ${!known && d.candidates.length ? `<div class="picks"><span class="muted small">ชื่อไม่ถูก แตะเลือกจากที่อ่านได้:</span>
+        ${d.candidates.map((c, i) => `<button type="button" class="pick-chip" data-act="pick-shop" data-i="${i}">${esc(c)}</button>`).join('')}</div>` : ''}
+      ${known ? `<p class="remember">จำร้านนี้ได้${d.via === 'acct' ? 'จากเลขบัญชีปลายทาง' : d.via === 'alias' ? 'จากชื่อที่เคยแก้' : ''}: ${esc(known.note || CAT_NAMES[known.cat])} → ${CAT_NAMES[known.cat]}</p>` : `
+      <label for="rv-note" class="first-note">ร้านใหม่: ร้านนี้คืออะไร (ถามครั้งเดียว)
+        <input id="rv-note" name="note" value="${esc(d.note)}" placeholder="เช่น ร้านข้าวหน้าหอ, ร้านกาแฟ" autocomplete="off"></label>`}
+      ${reasonBox(d)}
+      <label for="rv-cat">หมวด<select id="rv-cat" name="cat">${catOptions(d.cat)}</select></label>
+      ${d.cat === 'fixed' ? `<label for="rv-fixed">ติ๊กว่าจ่ายแล้ว<select id="rv-fixed" name="fixedIdx">
+        <option value="">ไม่ติ๊ก</option>${s.fixed.map((f, i) => `<option value="${i}" ${d.fixedIdx === String(i) ? 'selected' : ''}>${esc(f.name)}</option>`).join('')}${n(s.debt.minPay) > 0 ? `<option value="debt" ${d.fixedIdx === 'debt' ? 'selected' : ''}>ขั้นต่ำบัตรเครดิต</option>` : ''}</select></label>
+        <p class="muted small">ค่าคงที่ไม่หักจากงบรายวัน</p>` : ''}
+      ${d.cat === 'transfer' ? '<p class="muted small">โอน/ออม ไม่หักจากงบรายวัน</p>' : d.cat === 'income' ? '<p class="muted small">รายรับไม่หักงบ ดูยอดรวมได้ที่หน้าวันนี้</p>' : ''}
+      <p class="muted small">วันที่ ${thDate(dayDate(d.day))}${d.day < 0 ? ' (ก่อนเริ่มรอบ ใช้เป็นข้อมูลตั้งต้น ไม่หักงบ)' : ''} · ที่มา: ${SRC[d.source]}</p>
+      <div class="row"><button class="btn" type="submit">บันทึก</button><button class="btn btn-ghost" type="button" data-act="cancel-draft">ยกเลิก</button></div>
+      ${d.raw ? `<details class="raw"><summary>ดูข้อความที่ OCR อ่านได้</summary><pre>${esc(d.raw)}</pre>
+        <button type="button" class="btn btn-small btn-ghost" data-act="copy-raw">คัดลอกข้อความ</button></details>` : ''}
+    </form>`;
+  }
+
+  /* ---------- หน้าร้านที่จำ ---------- */
+  function viewShops() {
+    const list = Object.entries(S.shops);
+    return `<section class="block">
+      <h2>ร้านที่แอปจำแล้ว <span class="muted num">${list.length}</span></h2>
+      <p class="muted small">ใส่โน้ตครั้งแรกครั้งเดียว ครั้งต่อไปแอปจัดหมวดให้เอง เปลี่ยนหมวดได้ที่นี่</p>
+      <button class="btn btn-link" data-act="clear-aliases">ล้างทางลัด (ชื่อที่เคยแก้และเลขบัญชี) แต่เก็บร้านไว้</button>
+      ${list.length ? `<ul class="shops">${list.map(([k, v]) => `
+        <li><div><strong>${esc(v.name)}</strong><span class="sub">${esc(v.note || 'ไม่มีโน้ต')}</span></div>
+        <div class="tx-r"><select id="shop-${esc(k)}" data-act="shop-cat" data-k="${esc(k)}" aria-label="หมวดของ ${esc(v.name)}">${catOptions(v.cat)}</select>
+        <button class="icon-btn" data-act="del-shop" data-k="${esc(k)}" aria-label="ลืมร้าน ${esc(v.name)}">ลืม</button></div></li>`).join('')}</ul>`
+        : '<p class="empty">ยังไม่มีร้านที่จำไว้</p>'}
+    </section>`;
+  }
+
+  /* ---------- หน้าตั้งค่า ---------- */
+  function viewSettings() {
+    const s = S.settings;
+    const f = (id, label, val, extra = '') => `<label for="${id}">${label}<input id="${id}" name="${id}" type="number" inputmode="numeric" min="0" step="1" value="${esc(val)}" ${extra}></label>`;
+    return `
+    <form class="block settings" data-form="settings">
+      <h2>ตั้งค่าแรก</h2>
+      <fieldset><legend>รายได้ต่อเดือน</legend>
+        <div class="grid2">${f('incomeMin', 'ต่ำสุดที่เคยได้', s.incomeMin)}${f('incomeNormal', 'ปกติ', s.incomeNormal)}</div>
+        <div class="seg" role="radiogroup" aria-label="โหมดคำนวณ">
+          <label><input type="radio" name="mode" value="careful" ${s.mode === 'careful' ? 'checked' : ''}> ระมัดระวัง (ใช้รายได้ต่ำสุด)</label>
+          <label><input type="radio" name="mode" value="normal" ${s.mode === 'normal' ? 'checked' : ''}> ปกติ</label>
+        </div>
+      </fieldset>
+      <fieldset><legend>ค่าใช้จ่ายคงที่</legend>
+        <div id="fixed-list">${s.fixed.map((x, i) => `<div class="fx-row">
+          <input id="fxn-${i}" name="fxn-${i}" value="${esc(x.name)}" aria-label="ชื่อรายการ" required>
+          <input id="fxa-${i}" name="fxa-${i}" type="number" inputmode="numeric" min="0" value="${esc(x.amount)}" aria-label="จำนวนเงิน">
+          <button type="button" class="icon-btn" data-act="fx-del" data-i="${i}" aria-label="ลบ ${esc(x.name)}">ลบ</button></div>`).join('')}</div>
+        <button type="button" class="btn btn-small btn-ghost" data-act="fx-add">+ เพิ่มรายการ</button>
+      </fieldset>
+      <fieldset><legend>หนี้บัตรเครดิต</legend>
+        <div class="grid3">${f('debtBalance', 'ยอดหนี้', s.debt.balance)}${f('debtMin', 'ขั้นต่ำต่อเดือน', s.debt.minPay)}
+          <label for="debtApr">ดอกเบี้ย % ต่อปี<input id="debtApr" name="debtApr" type="number" inputmode="decimal" min="0" step="0.01" value="${esc(s.debt.apr)}"></label></div>
+        <p class="muted small">ขั้นต่ำนับเป็นค่าคงที่ หักออกก่อนแบ่งงบรายวัน ยอดหนี้และดอกเบี้ยใช้แสดงผล ดูยอดขั้นต่ำจากใบแจ้งยอดของบัตร</p>
+      </fieldset>
+      <fieldset><legend>ชื่อบัญชีของฉัน</legend>
+        <label for="owners">ชื่อตามบัญชีธนาคาร คั่นด้วยจุลภาค (ไทยและอังกฤษ)<input id="owners" name="owners" value="${esc((s.owners || []).join(', '))}" placeholder="สมชาย ใจดี, SOMCHAI JAIDEE" autocomplete="off"></label>
+        <p class="muted small">ใช้แยกทิศทางเงิน: คุณเป็นผู้รับ = รายรับ, คุณเป็นทั้งผู้ส่งและผู้รับ = โอนระหว่างบัญชีตัวเอง (ไม่นับงบ)</p>
+      </fieldset>
+      <fieldset><legend>เงินสำรองและรอบ</legend>
+        <div class="grid3">${f('reserve', 'กันเงินสำรอง', s.reserve)}${f('days', 'จำนวนวันในรอบ', s.days, 'min="1" max="31"')}
+          <label for="startDate">เริ่มรอบ<input id="startDate" name="startDate" type="date" value="${esc(s.startDate)}"></label></div>
+        <div class="seg" role="radiogroup" aria-label="เงินเหลือแต่ละวัน">
+          <label><input type="radio" name="leftoverMode" value="bucket" ${s.leftoverMode !== 'tomorrow' ? 'checked' : ''}> เงินเหลือเก็บเข้าถังสำรอง</label>
+          <label><input type="radio" name="leftoverMode" value="tomorrow" ${s.leftoverMode === 'tomorrow' ? 'checked' : ''}> บวกเข้างบพรุ่งนี้</label>
+        </div>
+      </fieldset>
+      <fieldset><legend>หมวดที่ปรับได้ (เรียงตามลำดับที่ลดก่อน)</legend>
+        <div class="cat-head muted small"><span>หมวด</span><span>งบ/วัน (สัดส่วน)</span><span>ลดได้ %</span><span></span></div>
+        ${s.cats.map((c, i) => `<div class="cat-row"><span>${CAT_NAMES[c.id]}</span>
+          <input id="cw-${c.id}" name="cw-${c.id}" type="number" min="0" value="${esc(c.weight)}" aria-label="สัดส่วน ${CAT_NAMES[c.id]}">
+          <input id="cc-${c.id}" name="cc-${c.id}" type="number" min="0" max="100" value="${Math.round(c.cap * 100)}" aria-label="ลดได้ % ${CAT_NAMES[c.id]}">
+          <span class="ord"><button type="button" class="icon-btn" data-act="cat-up" data-i="${i}" ${i === 0 ? 'disabled' : ''} aria-label="เลื่อนขึ้น">↑</button><button type="button" class="icon-btn" data-act="cat-down" data-i="${i}" ${i === s.cats.length - 1 ? 'disabled' : ''} aria-label="เลื่อนลง">↓</button></span></div>`).join('')}
+        <p class="muted small">หมวดสุดท้ายในลำดับได้เศษจากการปัด แนะนำให้ค่ากินอยู่ท้ายและลดได้ไม่เกิน 50%</p>
+      </fieldset>
+      <div class="row"><button class="btn" type="submit">บันทึกและคำนวณใหม่</button></div>
+      <p class="status" aria-live="polite">${esc(flash)}</p>
+    </form>
+    <section class="block">
+      <h2>กฎจัดหมวด <span class="muted num">${E.Rules.RULES.length} กลุ่ม</span></h2>
+      <p class="muted small">ลำดับ: ชื่อผู้ส่ง/ผู้รับ → บันทึกช่วยจำ → ร้านที่คุณสอนไว้ → ชื่อร้าน → อื่นๆ (ให้คุณเลือก) กฎบนชนะกฎล่าง</p>
+      <details class="rules"><summary>ดูกฎทั้งหมด</summary><ol>${E.Rules.RULES.map(r => `<li><strong>${esc(r.label)}</strong> → ${CAT_NAMES[r.cat]}<span class="sub">${esc(r.terms.slice(0, 8).join(', '))}${r.terms.length > 8 ? ` และอีก ${r.terms.length - 8} คำ` : ''}</span></li>`).join('')}</ol></details>
+    </section>
+    <section class="block">
+      <h2>ตรวจกติกาเครื่องคำนวณ</h2>
+      <ul class="tests">${runTests().map(x => `<li class="${x.ok ? 'pass' : 'fail'}"><span>${x.ok ? 'ผ่าน' : 'ไม่ผ่าน'}</span> ${esc(x.name)}</li>`).join('')}</ul>
+    </section>
+    <section class="block">
+      <h2>ข้อมูลในเครื่องนี้</h2>
+      <p class="muted small">เก็บในเบราว์เซอร์นี้เท่านั้น ไม่มีบัญชีผู้ใช้</p>
+      <div class="row"><button class="btn btn-ghost" data-act="reset-sample">โหลดข้อมูลตัวอย่างใหม่</button><button class="btn btn-ghost" data-act="clear-all">เริ่มใหม่แบบว่าง</button></div>
+    </section>`;
+  }
+
+  function runTests() {
+    const base = () => ({ incomeNormal: 20000, incomeMin: 15000, mode: 'normal', reserve: 2000, days: 30, leftoverMode: 'bucket',
+      fixed: [{ amount: 8000 }], debt: { minPay: 0 },
+      cats: [{ id: 'shop', weight: 83, cap: 1 }, { id: 'coffee', weight: 50, cap: .5 }, { id: 'food', weight: 200, cap: .5 }] });
+    const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    const res = [];
+    const T = (name, fn) => { let ok = false; try { ok = fn(); } catch (e) {} res.push({ name, ok }); };
+    const sumA = a => a.reduce((x, y) => x + y, 0);
+    const rs = [];
+    T('T1 งบวันแรก B = 333, หมวด 83/50/200', () => { const r = E.replay(base(), { txns: [] }, 0); rs.push(r); return r.today.B === 333 && eq(r.today.cb, [83, 50, 200]); });
+    T('T2 ใช้เกิน 100 → วันที่ 2 งบ 233', () => { const r = E.replay(base(), { txns: [{ day: 0, amount: 433, cat: 'food' }] }, 1); rs.push(r); return r.today.T === 233 && eq(r.today.red, [83, 17, 0]); });
+    T('T3 ใช้เหลือ 100 → ถังสำรอง 100', () => { const r = E.replay(base(), { txns: [{ day: 0, amount: 233, cat: 'food' }] }, 1); rs.push(r); return r.bucket === 100 && r.today.T === 333; });
+    T('T4 รายได้เป็น 17,000 วันที่ 10 → B = 190', () => { const tx = []; for (let d = 0; d < 9; d++) tx.push({ day: d, amount: 333, cat: 'food' }); const r = E.replay(base(), { txns: tx, incomes: [{ day: 9, amount: 17000 }] }, 9); rs.push(r); return r.today.B === 190 && r.D === 0; });
+    T('T12 ขั้นต่ำบัตร 1,500 → B = 283, หมวด 70/42/171', () => { const s = base(); s.debt.minPay = 1500; const r = E.replay(s, { txns: [] }, 0); rs.push(r); return r.today.B === 283 && eq(r.today.cb, [70, 42, 171]); });
+    T('T8 ผลรวมหมวดเท่ากับงบวันนี้ทุกวัน', () => rs.every(r => r.hist.every(h => sumA(h.catT) === h.T)));
+    return res;
+  }
+
+  /* ---------- OCR (Tesseract.js บนเครื่อง) ---------- */
+  let worker = null;
+  function loadScript(src) {
+    return new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error('load')); document.head.appendChild(s); });
+  }
+  const timeout = (p, ms) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error('timeout')), ms))]);
+  async function getWorker() {
+    if (!window.Tesseract) await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');
+    if (!worker) worker = await window.Tesseract.createWorker('tha+eng');
+    return worker;
+  }
+  function setStatus(t) { flash = t; const el = $('#ocr-status'); if (el) el.textContent = t; }
+  async function readSlip(file) {
+    setStatus('กำลังอ่านสลิปบนเครื่องนี้…');
+    try {
+      const w = await timeout(getWorker(), 60000);
+      const { data } = await timeout(w.recognize(file), 45000);
+      const p = E.parseSlip(data.text);
+      const miss = [p.amount == null && 'ยอด', !p.shop && 'ร้าน'].filter(Boolean);
+      openDraft(p, 'slip', miss.length ? `อ่าน${miss.join('และ')}ไม่ได้ กรอกเองได้เลย` : 'อ่านจากสลิปแล้ว ตรวจตัวเลขก่อนบันทึก');
+    } catch (e) {
+      openDraft({}, 'slip', 'อ่านอัตโนมัติไม่ได้บนหน้านี้ กรอกยอดและร้านเองได้ (OCR ทำงานเมื่อเปิดแอปจากเว็บที่โฮสต์เอง)');
+    }
+  }
+
+  /* ---------- การกระทำ ---------- */
+  const uid = () => Math.random().toString(36).slice(2, 9);
+  function act(a, el) {
+    const s = S.settings;
+    switch (a) {
+      case 'go-add': tab = 'add'; break;
+      case 'del-tx': S.txns = S.txns.filter(x => x.id !== el.dataset.id); break;
+      case 'paid': s.fixed[+el.dataset.i].paid = el.checked; break;
+      case 'paid-debt': s.debt.paid = el.checked; break;
+      case 'cover': S.covers.push({ day: todayIdx() }); break;
+      case 'next-day': S.offset = n(S.offset) + 1; break;
+      case 'prev-day': S.offset = n(S.offset) - 1; break;
+      case 'clear-income': S.incomes = []; break;
+      case 'use-income': { const v = S.txns.filter(x => x.cat === 'income' && x.day >= 0 && x.day <= todayIdx()).reduce((a, x) => a + n(x.amount), 0); S.incomes = S.incomes.filter(e => e.day !== todayIdx()); S.incomes.push({ day: todayIdx(), amount: v }); break; }
+      case 'manual': openDraft({}, 'manual'); return;
+      case 'sample-slip': { const x = sampleSlips()[+el.dataset.i]; openDraft(E.parseSlip(x.text), 'sample', 'สลิปตัวอย่าง ผ่านตัวแยกยอด/ร้าน/วันที่เดียวกับ OCR'); return; }
+      case 'warm-ocr': setStatus('กำลังเตรียม OCR…'); timeout(getWorker(), 60000).then(() => setStatus('OCR พร้อมแล้ว'), () => setStatus('โหลด OCR ไม่ได้บนหน้านี้ ใช้สลิปตัวอย่างหรือพิมพ์เองแทน')); return;
+      case 'cancel-draft': draft = null; break;
+      case 'use-suggest': {
+        const f = el.form; draft.amount = f.elements.amount.value;
+        const sh = S.shops[draft.suggest]; if (!sh) return;
+        draft.shop = sh.name; draft.known = true; draft.via = 'acct'; draft.suggest = '';
+        draft.cls = E.classify({ sender: draft.sender, shop: sh.name, memo: draft.memo, owners: S.settings.owners, memory: sh });
+        draft.cat = draft.cls.cat; render(); return;
+      }
+      case 'pick-shop': {
+        const f = el.form; draft.amount = f.elements.amount.value; if (f.elements.note) draft.note = f.elements.note.value;
+        const c = draft.candidates[+el.dataset.i];
+        draft.candidates = draft.candidates.filter(x => x !== c).concat(draft.shop ? [draft.shop] : []);
+        draft.shop = c;
+        const k = S.aliases[E.shopKey(c)] || E.shopKey(c);
+        draft.cls = E.classify({ sender: draft.sender, shop: c, memo: draft.memo, owners: S.settings.owners, memory: S.shops[k] || null });
+        draft.cat = draft.cls.cat;
+        if (S.shops[k]) draft.shop = S.shops[k].name;
+        render(); return;
+      }
+      case 'copy-raw': {
+        const pre = el.parentElement.querySelector('pre');
+        const sel = () => { const r = document.createRange(); r.selectNodeContents(pre); const s2 = window.getSelection(); s2.removeAllRanges(); s2.addRange(r); };
+        try { navigator.clipboard.writeText(draft.raw).then(() => { el.textContent = 'คัดลอกแล้ว'; }, sel); } catch (e) { sel(); }
+        return;
+      }
+      case 'shop-cat': S.shops[el.dataset.k].cat = el.value; break;
+      case 'clear-aliases': S.aliases = {}; flash = ''; break;
+      case 'del-shop': { const k = el.dataset.k; delete S.shops[k]; Object.keys(S.aliases).forEach(x => { if (x !== '__shared' && S.aliases[x] === k) delete S.aliases[x]; }); break; }
+      case 'fx-add': syncSettings(); s.fixed.push({ name: 'รายการใหม่', amount: 0, paid: false }); break;
+      case 'fx-del': syncSettings(); s.fixed.splice(+el.dataset.i, 1); break;
+      case 'cat-up': case 'cat-down': { syncSettings(); const i = +el.dataset.i, j = a === 'cat-up' ? i - 1 : i + 1; [s.cats[i], s.cats[j]] = [s.cats[j], s.cats[i]]; break; }
+      case 'reset-sample': S = sampleState(); flash = 'โหลดข้อมูลตัวอย่างแล้ว'; break;
+      case 'clear-all': { const st = sampleState(); st.sample = false; st.txns = []; st.shops = {}; st.settings.fixed.forEach(f => f.paid = false); S = st; tab = 'settings'; flash = 'ล้างรายการแล้ว ตั้งค่าของคุณเองได้เลย'; break; }
+      default: return;
+    }
+    save(); render();
+  }
+  function syncSettings() {
+    const form = document.querySelector('[data-form="settings"]');
+    if (!form) return;
+    const fd = new FormData(form), s = S.settings, g = k => fd.get(k);
+    s.incomeMin = n(g('incomeMin')); s.incomeNormal = n(g('incomeNormal'));
+    s.mode = g('mode') || 'normal'; s.leftoverMode = g('leftoverMode') || 'bucket';
+    s.fixed.forEach((x, i) => { if (fd.has('fxn-' + i)) { x.name = g('fxn-' + i); x.amount = n(g('fxa-' + i)); } });
+    s.debt.balance = n(g('debtBalance')); s.debt.minPay = n(g('debtMin')); s.debt.apr = n(g('debtApr'));
+    s.owners = String(g('owners') || '').split(/[,،\n]/).map(x => x.trim()).filter(Boolean);
+    s.reserve = n(g('reserve')); s.days = Math.min(31, Math.max(1, n(g('days')) || 30));
+    if (g('startDate')) s.startDate = g('startDate');
+    s.cats.forEach(c => { c.weight = n(g('cw-' + c.id)); c.cap = Math.min(100, n(g('cc-' + c.id))) / 100; });
+  }
+  function submit(kind, form) {
+    if (kind === 'income') {
+      const v = n(form.querySelector('#inc-real').value);
+      S.incomes = S.incomes.filter(e => e.day !== todayIdx()); S.incomes.push({ day: todayIdx(), amount: v });
+    } else if (kind === 'settings') {
+      syncSettings(); S.sample = false; S.offset = 0; S.incomes = []; S.covers = [];
+      flash = 'บันทึกแล้ว งบคำนวณใหม่';
+    } else if (kind === 'review') {
+      const fd = new FormData(form);
+      const amount = Math.round(n(fd.get('amount')) * 100) / 100, shop = String(fd.get('shop')).trim(), cat = fd.get('cat');
+      const key = E.shopKey(shop);
+      const ownerKeys = (S.settings.owners || []).map(E.shopKey);
+      // ไม่สร้างทางลัดจากชื่อของผู้ใช้เอง (มักเป็นผู้ส่งที่ตัวอ่านหยิบผิด)
+      if (draft.orig.readShop && !ownerKeys.includes(draft.orig.readShop) && !E.Rules.isOwner(draft.orig.shop, S.settings.owners)) E.learnAlias(S.aliases, draft.orig.readShop, key);
+      if (draft.acct) E.learnAlias(S.aliases, 'acct:' + draft.acct, key);
+      if (!S.shops[key]) S.shops[key] = { name: shop, cat, note: String(fd.get('note') || '').trim(), created: isoToday() };
+      else S.shops[key].cat = cat;
+      const fx = fd.get('fixedIdx');
+      if (cat === 'fixed' && fx === 'debt') S.settings.debt.paid = true;
+      else if (cat === 'fixed' && fx !== null && fx !== '') S.settings.fixed[+fx].paid = true;
+      const edited = draft.source === 'slip' && (draft.orig.amount !== amount || draft.orig.shop !== shop);
+      S.txns.push({ id: uid(), day: draft.day, amount, shop, cat, source: draft.source, edited, memo: draft.memo || '' });
+      draft = null; tab = 'today';
+    }
+    save(); render();
+  }
+
+  /* ---------- วาดหน้า ---------- */
+  const TABS = [['today', 'วันนี้'], ['add', 'เพิ่มสลิป'], ['shops', 'ร้านที่จำ'], ['settings', 'ตั้งค่า']];
+  function render() {
+    const views = { today: viewToday, add: viewAdd, shops: viewShops, settings: viewSettings };
+    $('#view').innerHTML = views[tab]();
+    $('#date-line').textContent = `${thDate(dayDate(Math.max(0, Math.min(todayIdx(), S.settings.days - 1))))} · วันที่ ${Math.min(Math.max(todayIdx(), 0), S.settings.days - 1) + 1}/${S.settings.days}`;
+    $('#sample-chip').hidden = !S.sample;
+    document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'));
+  }
+  document.addEventListener('click', e => {
+    const tb = e.target.closest('.tabs button');
+    if (tb) { tab = tb.dataset.tab; if (tab !== 'add') draft = null; flash = ''; render(); window.scrollTo(0, 0); return; }
+    const el = e.target.closest('[data-act]');
+    if (el && el.tagName !== 'SELECT' && el.type !== 'checkbox' && el.type !== 'file') { e.preventDefault(); act(el.dataset.act, el); }
+  });
+  document.addEventListener('change', e => {
+    const el = e.target;
+    if (el.dataset.act === 'file' && el.files && el.files[0]) { readSlip(el.files[0]); el.value = ''; return; }
+    if (el.name === 'cat' && draft) { draft.cat = el.value; const f = el.form; draft.amount = f.elements.amount.value; draft.shop = f.elements.shop.value; if (f.elements.note) draft.note = f.elements.note.value; render(); return; }
+    if (el.dataset.act && (el.tagName === 'SELECT' || el.type === 'checkbox')) act(el.dataset.act, el);
+  });
+  document.addEventListener('input', e => {
+    const el = e.target;
+    if (draft && el.name === 'note' && !draft.known) {
+      draft.note = el.value;
+      const g = E.guessCat(el.value + ' ' + el.form.elements.shop.value);
+      if (g !== 'other') { el.form.elements.cat.value = g; draft.cat = g; }
+    }
+  });
+  document.addEventListener('submit', e => { const f = e.target.closest('[data-form]'); if (f) { e.preventDefault(); submit(f.dataset.form, f); } });
+  render();
+})();
+</script>
+
+</body>
+</html>
