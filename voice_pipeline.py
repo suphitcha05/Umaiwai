@@ -116,6 +116,40 @@ def format_items(res: dict) -> list[str]:
     return lines
 
 
+def _amount(n: float) -> str:
+    return f"{n:,.0f}" if float(n).is_integer() else f"{n:,.2f}"
+
+
+def build_summary(items: list[dict]) -> str:
+    """สรุปท้ายเซสชัน: 1) ยอดรวม 2) รายการรายรับ 3) รายการรายจ่าย (บรรทัดละรายการ)"""
+    incomes = [i for i in items if i["type"] == "income"]
+    expenses = [i for i in items if i["type"] == "expense"]
+    inc = sum(i["amount"] for i in incomes)
+    exp = sum(i["amount"] for i in expenses)
+    review = sum(1 for i in items if i.get("needs_review"))
+
+    def listing(rows):
+        if not rows:
+            return ["  (ไม่มี)"]
+        return [f"  - {i.get('merchant') or 'ไม่ระบุ'} {_amount(i['amount'])} บาท"
+                + ("  ⚠" if i.get("needs_review") else "") for i in rows]
+
+    out = [
+        "=== สรุปเซสชัน ===",
+        f"  รายการทั้งหมด: {len(items)} (ต้องตรวจ ⚠ {review})",
+        f"  รายรับรวม : {_amount(inc)} บาท",
+        f"  รายจ่ายรวม: {_amount(exp)} บาท",
+        f"  คงเหลือสุทธิ: {_amount(inc - exp)} บาท",
+        "",
+        f"=== รายการรายรับ ({len(incomes)}) ===",
+        *listing(incomes),
+        "",
+        f"=== รายการรายจ่าย ({len(expenses)}) ===",
+        *listing(expenses),
+    ]
+    return "\n".join(out)
+
+
 def show_result(res: dict) -> None:
     print(f"   └─ แหล่ง: {res.get('source')}" + (f"  (error: {res['error']})" if res.get("error") else ""))
     for line in format_items(res):
@@ -231,11 +265,7 @@ async def main():
             t.cancel()
         await conn.close()
 
-        exp = sum(i["amount"] for i in all_items if i["type"] == "expense")
-        inc = sum(i["amount"] for i in all_items if i["type"] == "income")
-        review = sum(1 for i in all_items if i.get("needs_review"))
-        summary = (f"=== สรุปเซสชัน ===\n  รายการ: {len(all_items)} (ต้องตรวจ {review}) | "
-                   f"รายจ่ายรวม: {exp:,.2f} บาท | รายรับรวม: {inc:,.2f} บาท")
+        summary = build_summary(all_items)
         txt.write(f"{'=' * 50}\n{summary}\n")
         log.close()
         txt.close()
