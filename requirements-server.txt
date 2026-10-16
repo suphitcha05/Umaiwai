@@ -1,0 +1,4 @@
+elevenlabs>=2.73.0
+python-dotenv
+requests
+easyocr
